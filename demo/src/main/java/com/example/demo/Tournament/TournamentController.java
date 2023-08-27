@@ -1,6 +1,7 @@
 package com.example.demo.Tournament;
 
 import com.example.demo.Matchmaking.Matchmaking;
+import com.example.demo.Matchmaking.MatchmakingService;
 import com.example.demo.User.User;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +19,12 @@ public class TournamentController {
 
 
     private final TournamentService ts;
+    private final MatchmakingService ms;
 
     @Autowired
-    public TournamentController(TournamentService ts) {
+    public TournamentController(TournamentService ts, MatchmakingService ms) {
         this.ts = ts;
+        this.ms = ms;
     }
     @GetMapping
     public List<Tournament> GetTournaments(){
@@ -38,13 +41,11 @@ public class TournamentController {
     }
     @PostMapping(path="EnterTournament")
     public Boolean EnterTournamentRequest(@RequestBody User user, @RequestParam(name = "Tournament_id") int Tournament_id){
-        /*if(ts.EnterTournamentRequest(user,tournament).booleanValue()){//check 5 queues
-            return ts.CreateMatchmakingRequest(user,tournament);
-
-        }*/
+        Matchmaking newm=new Matchmaking();
         if(ts.EnterTournamentRequest(user, Tournament_id)){
-            ts.CreateMatchmakingRequest(Tournament_id);
+            newm=ts.CreateMatchmakingRequest(Tournament_id);
         }
+        ms.StartMatchmaking(newm.id);
         return Boolean.TRUE;
     }
 }
