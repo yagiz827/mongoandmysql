@@ -77,34 +77,38 @@ public class TournamentService {
     }
 
     public Boolean EnterTournamentRequest(User user,int Tournament_id){
-        Optional<Tournament> tournamentobeadded=tsr.findById(Tournament_id);
-        System.out.println(mongoRepository.findAll());
-        MTournament Mtournament = mongoRepository.findAll().get(Tournament_id-1);
-        if(tournamentobeadded.isPresent())
-        {
-            List<List> loopList=new ArrayList<List>();
+        if(CanJoin(user)){
+            Optional<Tournament> tournamentobeadded=tsr.findById(Tournament_id);
+            System.out.println(mongoRepository.findAll());
+            MTournament Mtournament = mongoRepository.findAll().get(Tournament_id-1);
+            if(tournamentobeadded.isPresent())
+            {
+                List<List> loopList=new ArrayList<List>();
 
-            Tournament tournament=tournamentobeadded.get();
-            List<User> toBeAdded=tournament.UserList;
-            toBeAdded.add(user);
-            user.setTournament(tournament);
-            userRepository.save(user);
-            tsr.save(tournament);
-            ss.fetchadnupdate(Mtournament, user);
-            loopList.add(Mtournament.getGrList());
-            loopList.add(Mtournament.getFrList());
-            loopList.add(Mtournament.getUkList());
-            loopList.add(Mtournament.getTrList());
-            loopList.add(Mtournament.getUsList());
-            for (var t:loopList
-                 ) {
-                if(t.size()==0){
-                    return Boolean.FALSE;
+                Tournament tournament=tournamentobeadded.get();
+                List<User> toBeAdded=tournament.UserList;
+                toBeAdded.add(user);
+                user.setTournament(tournament);
+                userRepository.save(user);
+                tsr.save(tournament);
+                ss.fetchadnupdate(Mtournament, user);
+                loopList.add(Mtournament.getGrList());
+                loopList.add(Mtournament.getFrList());
+                loopList.add(Mtournament.getUkList());
+                loopList.add(Mtournament.getTrList());
+                loopList.add(Mtournament.getUsList());
+                for (var t:loopList
+                ) {
+                    if(t.size()==0){
+                        return Boolean.FALSE;
+                    }
                 }
+                return Boolean.TRUE;
             }
-            return Boolean.TRUE;
+            throw new RuntimeException();
         }
         throw new RuntimeException();
+
     }
 
     public List<User> getLeaderBoard(String Name){
