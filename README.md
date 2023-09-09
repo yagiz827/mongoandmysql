@@ -1,6 +1,6 @@
 ## Tournament and Matchmaking
-This is an project that uses sql as its persistent storage and uses mongodb when frequently accesed collections such as country lists are accesed
-in mongo collection there are 5 lists corresponding 5 countrys UkList	UsList	TrList	FrList	GrList and When a user enter the tournament via Entertournamentrequest that user is inserted into a user's country list in a mongo database and when the collections 5 different country columns have at least 1 user in their lists
+This is an project that uses sql as its persistent storage and uses mongodb when frequently accesed collections such as country lists are accesed.
+In mongo collection there are 5 lists corresponding 5 countrys UkList	UsList	TrList	FrList	GrList and When a user enter the tournament via Entertournamentrequest that user is inserted into a user's country list in a mongo database and when the collections 5 different country columns have at least 1 user in their lists
 a group containing the first user int the respecting list is created. When the groups is created regarding users are removed from the respective lists. Lists work as a queue meaning that removing is done from the start as they are first ones to enter to the tournament The winner is decided by random.
 ## Using mongo
 Using mongo to store different country's list and accessing them to create groups makes the the overall performace better compared to storing everything on the mysql.
