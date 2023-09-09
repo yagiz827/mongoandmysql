@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 
 @RestController
@@ -40,12 +42,14 @@ public class TournamentController {
         return ts.CreateTournamentRequest();
     }
     @PostMapping(path="EnterTournament")
-    public Boolean EnterTournamentRequest(@RequestBody User user, @RequestParam(name = "Tournament_id") int Tournament_id){
-        Matchmaking newm=new Matchmaking();
+    public Boolean EnterTournamentRequest(@RequestBody User user, @RequestParam(name = "Tournament_id") int Tournament_id) throws ExecutionException, InterruptedException {
+        CompletableFuture<Matchmaking> newm= new CompletableFuture<Matchmaking>();
+        //Matchmaking newmatch=new Matchmaking();
         if(ts.EnterTournamentRequest(user, Tournament_id)){
             newm=ts.CreateMatchmakingRequest(Tournament_id);
+            //newmatch=newm.get();
+            ms.StartMatchmaking(newm.get().id);
         }
-        ms.StartMatchmaking(newm.id);
         return Boolean.TRUE;
     }
 }

@@ -10,9 +10,11 @@ import com.example.demo.mongooo.MTournament;
 import com.example.demo.space.SpaceService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 
 @AllArgsConstructor
@@ -50,7 +52,8 @@ public class TournamentService {
         mongoRepository.save(newMT);
         return newT;
     }
-    public Matchmaking CreateMatchmakingRequest(int id){
+    @Async
+    public CompletableFuture<Matchmaking> CreateMatchmakingRequest(int id){
         List<List> loopList=new ArrayList<List>();
         MTournament mt = mongoRepository.findAll().get(id-1);
         Matchmaking newM=new Matchmaking();
@@ -73,7 +76,7 @@ public class TournamentService {
         Tournament tournament=tournamentobeadded.get();
         newM.setTournament(tournament);
         mrp.save(newM);
-        return newM;
+        return CompletableFuture.completedFuture(newM);
     }
 
     public Boolean EnterTournamentRequest(User user,int Tournament_id){
@@ -84,7 +87,6 @@ public class TournamentService {
             if(tournamentobeadded.isPresent())
             {
                 List<List> loopList=new ArrayList<List>();
-
                 Tournament tournament=tournamentobeadded.get();
                 List<User> toBeAdded=tournament.UserList;
                 toBeAdded.add(user);

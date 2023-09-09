@@ -25,8 +25,5 @@ public class Matchmaking {
     public Integer TrId;
     @Column
     public Integer UsId;
-
-
-
 }
 

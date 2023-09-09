@@ -39,16 +39,7 @@ public class SpaceService {
         UserCountryList.put("the United States",q.getUsList());
         UserCountryList.put("France",q.getFrList());
         var list=UserCountryList.get(h.getCountry());
-        //var y=q.getFrList();
-        //y.add(h);
         list.add(h);
         repo.save(q);
     }
-    /*var t=repo.findById(mt.getId());
-    var q =t.get();
-    User h=new User();
-    var y=q.getFrList();
-    y.add(h);
-    repo.save(q);
-*/
 }

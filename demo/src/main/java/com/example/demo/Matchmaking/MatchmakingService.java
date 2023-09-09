@@ -23,7 +23,7 @@ public class MatchmakingService {
 
     public void StartMatchmaking(int matchmakingid) {
         Matchmaking GetResults;
-        GetResults = mrp.findAll().get(matchmakingid);
+        GetResults = mrp.findAll().get(matchmakingid-1);
         List<Integer> UserElemination = new ArrayList<Integer>();
         UserElemination.add(GetResults.getFrId());
         UserElemination.add(GetResults.getUkId());
